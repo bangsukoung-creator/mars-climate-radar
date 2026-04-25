@@ -1,6 +1,11 @@
 const CONFIG = {
   refreshInterval: 5000,
   interpolationTime: 250,
+  // Rotation configuration
+  videoDuration: 7.975, // measured from ffprobe
+  // We'll use a sine-based horizontal oscillation to match the sphere's 3D rotation projection
+  amplitude: 25, // Max horizontal shift in %
+  centerX: 37.0, // Base X position in %
   coordinates: [
     { id: 'val-top-1', x: 37.0, y: 4.0, type: 'temp' },
     { id: 'val-top-2', x: 37.0, y: 8.0, type: 'pres' },
@@ -34,7 +39,7 @@ function initOverlays() {
     el.style.top = `${coord.y}%`;
     el.textContent = '--';
     container.appendChild(el);
-    state.data[coord.id] = { current: 0, target: 0 };
+    state.data[coord.id] = { current: 0, target: 0, baseLX: coord.x };
   });
 }
 
@@ -54,6 +59,28 @@ function resizeOverlay() {
   }
   container.style.width = `${w}px`;
   container.style.height = `${h}px`;
+}
+
+// Dynamic Position Update (Follow the rotating longitude line)
+function syncPosition() {
+  if (!video.paused && !video.ended) {
+    const time = video.currentTime;
+    // Calculate phase based on video duration
+    // The longitude line moves horizontally as the sphere rotates.
+    // In a 3D sphere projection, the horizontal movement follows a sine wave pattern.
+    const phase = (time / CONFIG.videoDuration) * Math.PI * 2;
+    const shift = Math.sin(phase) * CONFIG.amplitude;
+
+    CONFIG.coordinates.forEach(coord => {
+      const el = document.getElementById(coord.id);
+      if (el) {
+        // Adjust the X position based on the rotation phase
+        const dynamicX = CONFIG.centerX + shift;
+        el.style.left = `${dynamicX}%`;
+      }
+    });
+  }
+  requestAnimationFrame(syncPosition);
 }
 
 // Mock data generator
@@ -129,3 +156,4 @@ setInterval(updateValues, CONFIG.refreshInterval);
 setInterval(updateClock, 1000);
 updateValues();
 updateClock();
+requestAnimationFrame(syncPosition);
