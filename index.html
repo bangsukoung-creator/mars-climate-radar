@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MARS CLIMATE RADAR v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <div class="video-container">
+      <video id="mars-video" src="mars.mp4" autoplay loop muted playsinline></video>
+      <div id="overlay-container">
+        <!-- Overlay elements will be injected here by JS -->
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="status-bar">
+        <span class="blink">●</span> SIGNAL: NOMINAL | DATA REFRESH: 5s | <span id="clock">00:00:00</span>
+      </div>
+      <div class="info-panel">
+        <h3>MARS CLIMATE MONITORING v2.0</h3>
+        <p>Real-time dynamic overlay on original telemetry feed.</p>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

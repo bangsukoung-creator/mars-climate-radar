@@ -1,0 +1,138 @@
+:root {
+  --cyan-bright: #00E5FF;
+  --blue-text: #7094B3;
+  --bg-dark: #020B1A;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #000;
+  color: var(--blue-text);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.video-container {
+  position: relative;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  overflow: hidden;
+}
+
+#mars-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+#overlay-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  /* Match video display size - updated by JS */
+}
+
+.data-overlay {
+  position: absolute;
+  font-size: 14px;
+  color: var(--blue-text);
+  text-shadow: 0 0 5px rgba(112, 148, 179, 0.5);
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+  font-weight: bold;
+}
+
+.data-overlay.updating {
+  color: var(--cyan-bright);
+  text-shadow: 0 0 8px var(--cyan-bright);
+}
+
+.controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(2, 11, 26, 0.85);
+  border-top: 1px solid rgba(0, 229, 255, 0.3);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.status-bar {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.info-panel h3 {
+  font-size: 14px;
+  color: var(--cyan-bright);
+  margin-bottom: 2px;
+}
+
+.info-panel p {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.blink {
+  animation: blink-anim 1s step-end infinite;
+  color: var(--cyan-bright);
+}
+
+@keyframes blink-anim {
+  50% { opacity: 0; }
+}
+
+#toast-container {
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  z-index: 100;
+}
+
+.toast {
+  background: rgba(255, 0, 0, 0.2);
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  color: #ff5555;
+  padding: 8px 15px;
+  font-size: 11px;
+  margin-top: 5px;
+  border-radius: 2px;
+  animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .data-overlay { font-size: 10px; }
+  .controls { padding: 5px 10px; }
+  .info-panel h3 { font-size: 12px; }
+}
